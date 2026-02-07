@@ -6,7 +6,11 @@ cache effectiveness, and waveform file statistics.
 """
 
 from typing import Dict, Any, Optional
-import psutil
+try:
+    import psutil
+    PSUTIL_AVAILABLE = True
+except ImportError:
+    PSUTIL_AVAILABLE = False
 import os
 from datetime import datetime
 from .session import SessionManager
@@ -175,6 +179,24 @@ async def perf_memory_usage(
             } | None
         }
     """
+    # Check if psutil is available
+    if not PSUTIL_AVAILABLE:
+        return {
+            "error": "psutil not available - install with: pip install psutil",
+            "process": {
+                "pid": os.getpid(),
+                "memory_mb": None,
+                "memory_percent": None,
+                "cpu_percent": None
+            },
+            "sessions": {
+                "total": len(session_manager.list_sessions()),
+                "max": session_manager.max_sessions,
+                "details": []
+            },
+            "cache": None
+        }
+    
     # Process-level stats
     process = psutil.Process(os.getpid())
     memory_info = process.memory_info()
