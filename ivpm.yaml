@@ -1,0 +1,17 @@
+package:
+  name: pywellen-mcp
+
+  dep-sets:
+  - name: default-dev
+    deps: 
+    - name: pywellen
+      src: pypi
+    - name: pytest
+      src: pypi
+    - name: mcp
+      src: pypi
+    - name: wellen
+      url: https://github.com/ekiwi/wellen.git
+      anonymous: true
+    - name: sphinx
+      src: pypi

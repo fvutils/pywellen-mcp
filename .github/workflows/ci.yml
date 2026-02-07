@@ -1,0 +1,132 @@
+name: CI
+
+on:
+  - push
+  - pull_request
+  - workflow_dispatch
+
+jobs:
+  ci-linux:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Configure Python
+      run: |
+        # Install dependencies required to load ivpm.yaml file
+        ./bootstrap.sh
+        ./packages/python/bin/python3 -m pip install setuptools build --upgrade
+    
+    - name: Install Dependencies
+      run: |
+        ./packages/python/bin/python3 -m pip install -e ".[dev]"
+    
+    - name: Run Linters
+      run: |
+        # Run basic linting checks
+        ./packages/python/bin/python3 -m pip install ruff mypy
+        ./packages/python/bin/ruff check src/pywellen_mcp/ || true
+        ./packages/python/bin/mypy src/pywellen_mcp/ --ignore-missing-imports || true
+    
+    - name: Run Unit Tests
+      run: |
+        export PYTHONPATH=$(pwd)/src:$(pwd)/tests
+        ./packages/python/bin/pytest tests/unit/ -v --cov=pywellen_mcp --cov-report=xml --cov-report=term
+    
+    - name: Upload Coverage
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-pywellen-mcp
+    
+    - name: Build Package
+      run: |
+        # Update version with build number for development releases
+        if [[ ! "${{ github.ref }}" =~ ^refs/tags/v ]]; then
+          sed -i -e "s/version = \"\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\)\"/version = \"\1.dev${GITHUB_RUN_ID}\"/g" pyproject.toml
+        fi
+        ./packages/python/bin/python3 -m build .
+    
+    - name: Build Documentation
+      run: |
+        ./packages/python/bin/python3 -m pip install sphinx sphinx-rtd-theme myst-parser
+        ./packages/python/bin/sphinx-build -M html ./docs build
+        touch build/html/.nojekyll
+    
+    - name: Upload Package Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: python-package
+        path: dist/
+    
+    - name: Upload Documentation Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: documentation
+        path: build/html/
+    
+    - name: Publish to PyPI
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_API_TOKEN }}
+    
+    - name: Publish Documentation
+      if: startsWith(github.ref, 'refs/heads/master')
+      uses: JamesIves/github-pages-deploy-action@v4.4.1
+      with:
+        branch: gh-pages
+        folder: build/html
+
+  ci-integration:
+    runs-on: ubuntu-latest
+    needs: ci-linux
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Configure Python
+      run: |
+        ./bootstrap.sh
+        ./packages/python/bin/python3 -m pip install -e ".[dev]"
+    
+    - name: Download Test Waveforms
+      run: |
+        # Download sample VCD files for integration testing
+        mkdir -p tests/fixtures
+        # Note: Add URLs to real test waveforms when available
+        echo "Integration test waveforms would be downloaded here"
+    
+    - name: Run Integration Tests
+      run: |
+        # Run integration tests when available
+        # ./packages/python/bin/pytest tests/integration/ -v
+        echo "Integration tests would run here"
+    
+    - name: Performance Benchmarks
+      run: |
+        # Run performance benchmarks
+        # ./packages/python/bin/python3 scripts/benchmark.py
+        echo "Performance benchmarks would run here"
+
+  ci-security:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Configure Python
+      run: |
+        ./bootstrap.sh
+        ./packages/python/bin/python3 -m pip install -e ".[dev]"
+    
+    - name: Security Scan
+      run: |
+        ./packages/python/bin/python3 -m pip install bandit safety
+        ./packages/python/bin/bandit -r src/pywellen_mcp/ -ll || true
+        ./packages/python/bin/safety check || true
+    
+    - name: Dependency Audit
+      run: |
+        ./packages/python/bin/python3 -m pip list --format=json | \
+          ./packages/python/bin/python3 -c "import sys,json; [print(p['name']+'=='+p['version']) for p in json.load(sys.stdin)]"
