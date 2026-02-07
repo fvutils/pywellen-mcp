@@ -1,12 +1,10 @@
 # Minimal makefile for Sphinx documentation
 #
-DOCS_DIR:=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-PROJ_DIR:=$(shell cd $(DOCS_DIR)/.. ; pwd)
 
 # You can set these variables from the command line, and also
 # from the environment for the first two.
 SPHINXOPTS    ?=
-SPHINXBUILD   ?= $(PROJ_DIR)/packages/python/bin/sphinx-build
+SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = .
 BUILDDIR      = _build
 
