@@ -1,0 +1,760 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Export and Integration Tools &mdash; PyWellen MCP 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Deployment Guide" href="deployment.html" />
+    <link rel="prev" title="LLM Optimization Tools" href="llm_optimization.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PyWellen MCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="llm_optimization.html">LLM Optimization Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llm_optimization.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llm_optimization.html#tools">Tools</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llm_optimization.html#query-natural-language">query_natural_language</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llm_optimization.html#signal-summarize">signal_summarize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llm_optimization.html#recommend-related-signals">recommend_related_signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llm_optimization.html#docs-get-started">docs_get_started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llm_optimization.html#docs-tool-guide">docs_tool_guide</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llm_optimization.html#best-practices">Best Practices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llm_optimization.html#token-efficiency">Token Efficiency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llm_optimization.html#query-interpretation-patterns">Query Interpretation Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llm_optimization.html#context-window-management">Context Window Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llm_optimization.html#integration-with-workflows">Integration with Workflows</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llm_optimization.html#limitations">Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llm_optimization.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Export and Integration Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#export-tools">Export Tools</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#export-to-csv">export_to_csv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#export-hierarchy-tree">export_hierarchy_tree</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#export-signal-data">export_signal_data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-tools">Configuration Tools</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#load-signal-list">load_signal_list</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#save-signal-list">save_signal_list</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#integration-tools">Integration Tools</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#integration-launch-viewer">integration_launch_viewer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-watch-file">integration_watch_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-generate-gtkwave-save">integration_generate_gtkwave_save</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#common-workflows">Common Workflows</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#workflow-1-export-for-analysis">Workflow 1: Export for Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#workflow-2-save-and-share-signal-lists">Workflow 2: Save and Share Signal Lists</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#workflow-3-launch-viewer-with-pre-configured-signals">Workflow 3: Launch Viewer with Pre-configured Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#workflow-4-live-simulation-monitoring">Workflow 4: Live Simulation Monitoring</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#best-practices">Best Practices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#file-paths">File Paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-files">Configuration Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#external-tool-integration">External Tool Integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#performance">Performance</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#file-format-recommendations">File Format Recommendations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#csv-export">CSV Export</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#json-export">JSON Export</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#yaml-export">YAML Export</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#limitations">Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Deployment</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="deployment.html#prerequisites">Prerequisites</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#system-requirements">System Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#dependencies">Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="deployment.html#installation">Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#from-pypi">From PyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#from-source">From Source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#using-ivpm">Using IVPM</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="deployment.html#configuration">Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#environment-variables">Environment Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#configuration-file">Configuration File</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="deployment.html#running-the-server">Running the Server</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#standalone-mode">Standalone Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#with-mcp-client">With MCP Client</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#docker-deployment">Docker Deployment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="deployment.html#production-considerations">Production Considerations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#performance-tuning">Performance Tuning</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#memory-management">Memory Management</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="deployment.html#security">Security</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#file-access-control">File Access Control</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#command-injection-protection">Command Injection Protection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#network-security">Network Security</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="deployment.html#monitoring">Monitoring</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#logging">Logging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#health-checks">Health Checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#metrics-to-monitor">Metrics to Monitor</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="deployment.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#common-issues">Common Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#debug-mode">Debug Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#performance-debugging">Performance Debugging</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="deployment.html#backup-and-recovery">Backup and Recovery</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#session-state">Session State</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#configuration-backup">Configuration Backup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#disaster-recovery">Disaster Recovery</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="deployment.html#upgrading">Upgrading</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#version-compatibility">Version Compatibility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html#upgrade-process">Upgrade Process</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="deployment.html#best-practices">Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deployment.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deployment.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyWellen MCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Export and Integration Tools</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/export_integration.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="export-and-integration-tools">
+<h1>Export and Integration Tools<a class="headerlink" href="#export-and-integration-tools" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The PyWellen MCP server includes tools for exporting waveform data and integrating with external tools and workflows. These tools enable:</p>
+<ul class="simple">
+<li><p>Exporting signal data to CSV and JSON formats</p></li>
+<li><p>Exporting design hierarchy to structured formats</p></li>
+<li><p>Loading and saving signal configuration files</p></li>
+<li><p>Launching external waveform viewers</p></li>
+<li><p>Monitoring files for changes</p></li>
+<li><p>Generating viewer-specific configuration files</p></li>
+</ul>
+<p>These tools bridge the gap between PyWellen and external analysis tools, viewers, and workflows.</p>
+</section>
+<section id="export-tools">
+<h2>Export Tools<a class="headerlink" href="#export-tools" title="Link to this heading"></a></h2>
+<section id="export-to-csv">
+<h3>export_to_csv<a class="headerlink" href="#export-to-csv" title="Link to this heading"></a></h3>
+<p><strong>Purpose</strong>: Export signal data to CSV format for analysis in spreadsheets or data science tools.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">session_id</span></code> (string, required): Active waveform session ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">signal_paths</span></code> (array, required): List of signal paths to export</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">output_path</span></code> (string, required): Path to output CSV file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">start_time</span></code> (integer, optional): Start time for export range</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">end_time</span></code> (integer, optional): End time for export range</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">include_header</span></code> (boolean, optional): Include column headers (default: true)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">time_format</span></code> (string, optional): “absolute” or “relative” (default: absolute)</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">output_file</span></code>: Path to created CSV file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">signals_exported</span></code>: Number of signals exported</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rows_written</span></code>: Number of data rows written</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">time_range</span></code>: Actual time range exported</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">format</span></code>: CSV format details</p></li>
+</ul>
+<p><strong>Example Usage</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;session_id&quot;</span><span class="p">:</span> <span class="s2">&quot;abc123&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;signal_paths&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;top.clk&quot;</span><span class="p">,</span> <span class="s2">&quot;top.data&quot;</span><span class="p">,</span> <span class="s2">&quot;top.valid&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;output_path&quot;</span><span class="p">:</span> <span class="s2">&quot;/tmp/signals.csv&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;time_format&quot;</span><span class="p">:</span> <span class="s2">&quot;relative&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Output Format</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Time</span><span class="p">,</span><span class="n">top</span><span class="o">.</span><span class="n">clk</span><span class="p">,</span><span class="n">top</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">top</span><span class="o">.</span><span class="n">valid</span>
+<span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mi">0</span>
+<span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mi">1</span>
+<span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mh">0xff</span><span class="p">,</span><span class="mi">1</span>
+<span class="mi">15</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mh">0xff</span><span class="p">,</span><span class="mi">0</span>
+</pre></div>
+</div>
+<p><strong>Use Cases</strong>:</p>
+<ul class="simple">
+<li><p>Statistical analysis in R, Python (pandas), or Excel</p></li>
+<li><p>Plotting signal waveforms</p></li>
+<li><p>Correlation analysis between signals</p></li>
+<li><p>Export for regression testing</p></li>
+</ul>
+</section>
+<section id="export-hierarchy-tree">
+<h3>export_hierarchy_tree<a class="headerlink" href="#export-hierarchy-tree" title="Link to this heading"></a></h3>
+<p><strong>Purpose</strong>: Export design hierarchy as structured tree for visualization or processing.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">session_id</span></code> (string, required): Active session ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">output_path</span></code> (string, required): Path to output file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">format</span></code> (string, optional): “json”, “yaml”, or “text” (default: json)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">include_variables</span></code> (boolean, optional): Include variable details (default: true)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">include_metadata</span></code> (boolean, optional): Include scope metadata (default: true)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_depth</span></code> (integer, optional): Maximum tree depth (null = unlimited)</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">output_file</span></code>: Path to created file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">format</span></code>: Format used</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">total_scopes</span></code>: Number of scopes exported</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">total_variables</span></code>: Number of variables exported</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_depth_reached</span></code>: Maximum depth in hierarchy</p></li>
+</ul>
+<p><strong>Example - JSON Output</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;design&quot;</span><span class="p">:</span> <span class="s2">&quot;test.vcd&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;scopes&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;top&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;Module&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;num_children&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="s2">&quot;num_variables&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;depth&quot;</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;variables&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;clk&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;Wire&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;direction&quot;</span><span class="p">:</span> <span class="s2">&quot;Input&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;length&quot;</span><span class="p">:</span> <span class="mi">1</span>
+                <span class="p">}</span>
+            <span class="p">],</span>
+            <span class="s2">&quot;children&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">...</span><span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Example - Text Output</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Design: test.vcd
+
+├─ top (Module)
+  │  clk : Wire
+  │  data : Reg
+  ├─ cpu (Module)
+    │  alu_out : Wire
+</pre></div>
+</div>
+<p><strong>Use Cases</strong>:</p>
+<ul class="simple">
+<li><p>Design visualization tools</p></li>
+<li><p>Documentation generation</p></li>
+<li><p>Hierarchy analysis</p></li>
+<li><p>Module extraction</p></li>
+</ul>
+</section>
+<section id="export-signal-data">
+<h3>export_signal_data<a class="headerlink" href="#export-signal-data" title="Link to this heading"></a></h3>
+<p><strong>Purpose</strong>: Export single signal’s complete data to JSON or CSV.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">session_id</span></code> (string, required): Active session ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">signal_path</span></code> (string, required): Signal to export</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">output_path</span></code> (string, required): Path to output file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">format</span></code> (string, optional): “json” or “csv” (default: json)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">start_time</span></code> (integer, optional): Start time for export range</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">end_time</span></code> (integer, optional): End time for export range</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">output_file</span></code>: Path to created file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">signal_path</span></code>: Signal that was exported</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">format</span></code>: Format used</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">changes_exported</span></code>: Number of changes written</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">time_range</span></code>: Time range exported</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">file_size</span></code>: Size of created file</p></li>
+</ul>
+<p><strong>JSON Output Example</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;signal&quot;</span><span class="p">:</span> <span class="s2">&quot;top.clk&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;changes&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">}</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;total_changes&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s2">&quot;time_range&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="configuration-tools">
+<h2>Configuration Tools<a class="headerlink" href="#configuration-tools" title="Link to this heading"></a></h2>
+<section id="load-signal-list">
+<h3>load_signal_list<a class="headerlink" href="#load-signal-list" title="Link to this heading"></a></h3>
+<p><strong>Purpose</strong>: Load signal lists and configurations from JSON/YAML files.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">session_id</span></code> (string, required): Active session ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">config_path</span></code> (string, required): Path to configuration file</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">config_file</span></code>: Path to loaded file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">signals</span></code>: List of loaded signal paths</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">groups</span></code>: Signal groups from config</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">filters</span></code>: Filters from config</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">metadata</span></code>: Configuration metadata</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">validation</span></code>: Validation results (valid/invalid signals)</p></li>
+</ul>
+<p><strong>Configuration File Format</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;signals&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;top.clk&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;top.data&quot;</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;groups&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;control&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;top.valid&quot;</span><span class="p">,</span> <span class="s2">&quot;top.ready&quot;</span><span class="p">,</span> <span class="s2">&quot;top.enable&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;top.data&quot;</span><span class="p">,</span> <span class="s2">&quot;top.addr&quot;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;filters&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;scope&quot;</span><span class="p">:</span> <span class="s2">&quot;top.cpu&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;types&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Wire&quot;</span><span class="p">,</span> <span class="s2">&quot;Reg&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;min_bitwidth&quot;</span><span class="p">:</span> <span class="mi">8</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Main control signals&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;user@example.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;2024-01-15&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Use Cases</strong>:</p>
+<ul class="simple">
+<li><p>Reusable signal selection for common debug scenarios</p></li>
+<li><p>Team-shared signal lists</p></li>
+<li><p>Workflow automation</p></li>
+<li><p>Regression test configurations</p></li>
+</ul>
+</section>
+<section id="save-signal-list">
+<h3>save_signal_list<a class="headerlink" href="#save-signal-list" title="Link to this heading"></a></h3>
+<p><strong>Purpose</strong>: Save signal lists to configuration files for reuse.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">session_id</span></code> (string, required): Active session ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">output_path</span></code> (string, required): Path to output file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">signal_paths</span></code> (array, required): Signals to save</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">groups</span></code> (object, optional): Signal groups</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">filters</span></code> (object, optional): Filter configuration</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">metadata</span></code> (object, optional): Metadata</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">format</span></code> (string, optional): “json” or “yaml” (default: json)</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">output_file</span></code>: Path to created file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">format</span></code>: Format used</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">signals_saved</span></code>: Number of signals saved</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">groups_saved</span></code>: Number of groups saved</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">file_size</span></code>: Size of created file</p></li>
+</ul>
+</section>
+</section>
+<section id="integration-tools">
+<h2>Integration Tools<a class="headerlink" href="#integration-tools" title="Link to this heading"></a></h2>
+<section id="integration-launch-viewer">
+<h3>integration_launch_viewer<a class="headerlink" href="#integration-launch-viewer" title="Link to this heading"></a></h3>
+<p><strong>Purpose</strong>: Launch external waveform viewer with waveform file.</p>
+<p><strong>Supported Viewers</strong>:</p>
+<ul class="simple">
+<li><p><strong>GTKWave</strong>: Open-source waveform viewer</p></li>
+<li><p><strong>Verdi</strong>: Synopsys Verdi</p></li>
+<li><p><strong>Simvision</strong>: Cadence Simvision</p></li>
+<li><p><strong>DVE</strong>: Synopsys DVE</p></li>
+<li><p><strong>Wave</strong>: Generic wave viewer</p></li>
+<li><p><strong>Custom</strong>: User-defined viewer command</p></li>
+</ul>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">viewer</span></code> (string, required): Viewer name or “custom”</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">file_path</span></code> (string, required): Path to waveform file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">save_file</span></code> (string, optional): Optional save/config file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">additional_args</span></code> (array, optional): Additional command arguments</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wait</span></code> (boolean, optional): Wait for viewer to exit (default: false)</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">viewer</span></code>: Viewer launched</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">command</span></code>: Full command executed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pid</span></code>: Process ID (if not waiting)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">exit_code</span></code>: Exit code (if waiting)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">status</span></code>: “launched” or “completed”</p></li>
+</ul>
+<p><strong>Example Usage</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;viewer&quot;</span><span class="p">:</span> <span class="s2">&quot;gtkwave&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;file_path&quot;</span><span class="p">:</span> <span class="s2">&quot;/path/to/waveform.vcd&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;save_file&quot;</span><span class="p">:</span> <span class="s2">&quot;/path/to/signals.gtkw&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Viewer-Specific Arguments</strong>:</p>
+<ul class="simple">
+<li><p><strong>GTKWave</strong>: Save file loaded with <code class="docutils literal notranslate"><span class="pre">-a</span></code> flag</p></li>
+<li><p><strong>Simvision</strong>: Save file loaded with <code class="docutils literal notranslate"><span class="pre">-input</span></code> flag</p></li>
+<li><p><strong>Verdi</strong>: Save file loaded with <code class="docutils literal notranslate"><span class="pre">-sswr</span></code> flag</p></li>
+</ul>
+<p><strong>Custom Viewer Example</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;viewer&quot;</span><span class="p">:</span> <span class="s2">&quot;custom&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;file_path&quot;</span><span class="p">:</span> <span class="s2">&quot;/path/to/wave.vcd&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;additional_args&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;my_viewer&quot;</span><span class="p">,</span> <span class="s2">&quot;--fullscreen&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{file}</span><span class="s2">&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="integration-watch-file">
+<h3>integration_watch_file<a class="headerlink" href="#integration-watch-file" title="Link to this heading"></a></h3>
+<p><strong>Purpose</strong>: Monitor waveform file for changes (useful for live simulation).</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">file_path</span></code> (string, required): Path to file to monitor</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">interval</span></code> (integer, optional): Check interval in seconds (default: 5)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_checks</span></code> (integer, optional): Maximum checks (default: 60)</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">file_path</span></code>: File being monitored</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">status</span></code>: “unchanged”, “modified”, “created”, “deleted”, or “not_found”</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">last_modified</span></code>: Last modification timestamp</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">file_size</span></code>: Current file size</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size_change</span></code>: Size difference (if modified)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">checks_performed</span></code>: Number of checks performed</p></li>
+</ul>
+<p><strong>Example Usage</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;file_path&quot;</span><span class="p">:</span> <span class="s2">&quot;/sim/output/waves.vcd&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;interval&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s2">&quot;max_checks&quot;</span><span class="p">:</span> <span class="mi">120</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Use Cases</strong>:</p>
+<ul class="simple">
+<li><p>Live simulation monitoring</p></li>
+<li><p>Auto-reload workflows</p></li>
+<li><p>Simulation completion detection</p></li>
+<li><p>File update notifications</p></li>
+</ul>
+</section>
+<section id="integration-generate-gtkwave-save">
+<h3>integration_generate_gtkwave_save<a class="headerlink" href="#integration-generate-gtkwave-save" title="Link to this heading"></a></h3>
+<p><strong>Purpose</strong>: Generate GTKWave save file (.gtkw) for quick signal viewing.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">session_id</span></code> (string, required): Active session ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">output_path</span></code> (string, required): Path to .gtkw file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">signal_paths</span></code> (array, required): Signals to include</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">time_range</span></code> (object, optional): Time range dict with start/end</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">group_signals</span></code> (boolean, optional): Group by hierarchy (default: true)</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">output_file</span></code>: Path to created save file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">format</span></code>: “gtkwave_save”</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">signals_included</span></code>: Number of signals included</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">groups_created</span></code>: Number of signal groups</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">file_size</span></code>: Size of created file</p></li>
+</ul>
+<p><strong>Generated Save File</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">*</span><span class="p">]</span>
+<span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">GTKWave</span> <span class="n">Save</span> <span class="n">File</span>
+<span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Generated</span> <span class="n">by</span> <span class="n">PyWellen</span> <span class="n">MCP</span>
+<span class="p">[</span><span class="o">*</span><span class="p">]</span>
+
+<span class="p">[</span><span class="n">dumpfile</span><span class="p">]</span> <span class="s2">&quot;(null)&quot;</span>
+<span class="p">[</span><span class="n">timestart</span><span class="p">]</span> <span class="mi">0</span>
+<span class="p">[</span><span class="n">timeend</span><span class="p">]</span> <span class="mi">1000</span>
+
+<span class="nd">@top</span><span class="o">.</span><span class="n">cpu</span>
+<span class="n">top</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">clk</span>
+<span class="n">top</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">data</span>
+<span class="n">top</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">valid</span>
+<span class="o">@-</span>
+
+<span class="nd">@top</span><span class="o">.</span><span class="n">mem</span>
+<span class="n">top</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">addr</span>
+<span class="n">top</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">data</span>
+<span class="o">@-</span>
+</pre></div>
+</div>
+<p><strong>Use Cases</strong>:</p>
+<ul class="simple">
+<li><p>Pre-configured waveform views</p></li>
+<li><p>Team-shared debug setups</p></li>
+<li><p>Automated test result viewing</p></li>
+<li><p>Quick signal inspection</p></li>
+</ul>
+</section>
+</section>
+<section id="common-workflows">
+<h2>Common Workflows<a class="headerlink" href="#common-workflows" title="Link to this heading"></a></h2>
+<section id="workflow-1-export-for-analysis">
+<h3>Workflow 1: Export for Analysis<a class="headerlink" href="#workflow-1-export-for-analysis" title="Link to this heading"></a></h3>
+<p>Export signals to CSV for analysis in Python/R/Excel:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">1.</span> <span class="n">Open</span> <span class="n">waveform</span> <span class="k">with</span> <span class="n">waveform_open</span>
+<span class="mf">2.</span> <span class="n">Find</span> <span class="n">signals</span> <span class="n">of</span> <span class="n">interest</span> <span class="k">with</span> <span class="n">hierarchy_search</span>
+<span class="mf">3.</span> <span class="n">Export</span> <span class="n">to</span> <span class="n">CSV</span> <span class="k">with</span> <span class="n">export_to_csv</span>
+<span class="mf">4.</span> <span class="n">Analyze</span> <span class="ow">in</span> <span class="n">external</span> <span class="n">tool</span> <span class="p">(</span><span class="n">pandas</span><span class="p">,</span> <span class="n">Excel</span><span class="p">,</span> <span class="n">etc</span><span class="o">.</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="workflow-2-save-and-share-signal-lists">
+<h3>Workflow 2: Save and Share Signal Lists<a class="headerlink" href="#workflow-2-save-and-share-signal-lists" title="Link to this heading"></a></h3>
+<p>Create reusable signal configurations:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">1.</span> <span class="n">Open</span> <span class="n">waveform</span> <span class="ow">and</span> <span class="n">explore</span> <span class="n">hierarchy</span>
+<span class="mf">2.</span> <span class="n">Identify</span> <span class="n">important</span> <span class="n">signals</span>
+<span class="mf">3.</span> <span class="n">Save</span> <span class="n">to</span> <span class="n">config</span> <span class="k">with</span> <span class="n">save_signal_list</span>
+<span class="mf">4.</span> <span class="n">Share</span> <span class="n">config</span> <span class="n">file</span> <span class="k">with</span> <span class="n">team</span>
+<span class="mf">5.</span> <span class="n">Load</span> <span class="k">with</span> <span class="n">load_signal_list</span> <span class="ow">in</span> <span class="n">future</span> <span class="n">sessions</span>
+</pre></div>
+</div>
+</section>
+<section id="workflow-3-launch-viewer-with-pre-configured-signals">
+<h3>Workflow 3: Launch Viewer with Pre-configured Signals<a class="headerlink" href="#workflow-3-launch-viewer-with-pre-configured-signals" title="Link to this heading"></a></h3>
+<p>Quick waveform viewing with pre-loaded signals:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">1.</span> <span class="n">Open</span> <span class="n">waveform</span> <span class="n">session</span>
+<span class="mf">2.</span> <span class="n">Generate</span> <span class="n">GTKWave</span> <span class="n">save</span> <span class="k">with</span> <span class="n">integration_generate_gtkwave_save</span>
+<span class="mf">3.</span> <span class="n">Launch</span> <span class="n">viewer</span> <span class="k">with</span> <span class="n">integration_launch_viewer</span>
+<span class="mf">4.</span> <span class="n">Signals</span> <span class="n">are</span> <span class="n">pre</span><span class="o">-</span><span class="n">loaded</span> <span class="ow">and</span> <span class="n">grouped</span>
+</pre></div>
+</div>
+</section>
+<section id="workflow-4-live-simulation-monitoring">
+<h3>Workflow 4: Live Simulation Monitoring<a class="headerlink" href="#workflow-4-live-simulation-monitoring" title="Link to this heading"></a></h3>
+<p>Monitor ongoing simulation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">1.</span> <span class="n">Start</span> <span class="n">simulation</span> <span class="p">(</span><span class="n">generates</span> <span class="n">waveform</span> <span class="n">file</span><span class="p">)</span>
+<span class="mf">2.</span> <span class="n">Use</span> <span class="n">integration_watch_file</span> <span class="n">to</span> <span class="n">monitor</span> <span class="k">for</span> <span class="n">updates</span>
+<span class="mf">3.</span> <span class="n">When</span> <span class="n">modified</span><span class="p">,</span> <span class="nb">open</span> <span class="n">new</span> <span class="n">session</span> <span class="k">with</span> <span class="n">waveform_open</span>
+<span class="mf">4.</span> <span class="n">Analyze</span> <span class="n">latest</span> <span class="n">data</span>
+<span class="mf">5.</span> <span class="n">Repeat</span> <span class="n">until</span> <span class="n">simulation</span> <span class="n">completes</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<section id="file-paths">
+<h3>File Paths<a class="headerlink" href="#file-paths" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Always use absolute paths for reliability</p></li>
+<li><p>Check directory permissions before export</p></li>
+<li><p>Use temporary directories for throwaway exports</p></li>
+<li><p>Organize exports by date/session for tracking</p></li>
+</ul>
+</section>
+<section id="configuration-files">
+<h3>Configuration Files<a class="headerlink" href="#configuration-files" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Use JSON for simple configs</p></li>
+<li><p>Use YAML for complex, human-editable configs</p></li>
+<li><p>Include metadata (author, date, description)</p></li>
+<li><p>Version control configuration files</p></li>
+<li><p>Document signal groupings and filters</p></li>
+</ul>
+</section>
+<section id="external-tool-integration">
+<h3>External Tool Integration<a class="headerlink" href="#external-tool-integration" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Check viewer availability before launching</p></li>
+<li><p>Use save files for consistent viewer configuration</p></li>
+<li><p>Launch viewers in background (wait=false) for responsiveness</p></li>
+<li><p>Provide additional_args for custom options</p></li>
+</ul>
+</section>
+<section id="performance">
+<h3>Performance<a class="headerlink" href="#performance" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Limit time ranges for large exports</p></li>
+<li><p>Use signal_summarize before full export</p></li>
+<li><p>Export only needed signals</p></li>
+<li><p>Consider batch operations for multiple exports</p></li>
+</ul>
+</section>
+</section>
+<section id="file-format-recommendations">
+<h2>File Format Recommendations<a class="headerlink" href="#file-format-recommendations" title="Link to this heading"></a></h2>
+<section id="csv-export">
+<h3>CSV Export<a class="headerlink" href="#csv-export" title="Link to this heading"></a></h3>
+<p><strong>Pros</strong>:
+* Universal compatibility
+* Easy to parse
+* Works with spreadsheets</p>
+<p><strong>Cons</strong>:
+* Large file sizes
+* No hierarchy information
+* Text-based (slower for large data)</p>
+<p><strong>Best For</strong>:
+* Spreadsheet analysis
+* Statistical processing
+* Quick data inspection</p>
+</section>
+<section id="json-export">
+<h3>JSON Export<a class="headerlink" href="#json-export" title="Link to this heading"></a></h3>
+<p><strong>Pros</strong>:
+* Structured format
+* Supports metadata
+* Easy to parse programmatically</p>
+<p><strong>Cons</strong>:
+* Larger than binary formats
+* Slower for huge datasets</p>
+<p><strong>Best For</strong>:
+* Tool integration
+* Configuration files
+* Hierarchical data</p>
+</section>
+<section id="yaml-export">
+<h3>YAML Export<a class="headerlink" href="#yaml-export" title="Link to this heading"></a></h3>
+<p><strong>Pros</strong>:
+* Human-readable
+* Supports comments
+* Good for configuration</p>
+<p><strong>Cons</strong>:
+* Requires pyyaml package
+* Slower parsing than JSON</p>
+<p><strong>Best For</strong>:
+* Configuration files
+* Human-edited files
+* Documentation</p>
+</section>
+</section>
+<section id="limitations">
+<h2>Limitations<a class="headerlink" href="#limitations" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>File watching is polling-based (not event-driven)</p></li>
+<li><p>Large CSV exports may consume significant memory</p></li>
+<li><p>Viewer integration requires viewer to be installed</p></li>
+<li><p>YAML support requires optional pyyaml package</p></li>
+<li><p>Custom viewer commands are platform-dependent</p></li>
+</ul>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><span class="xref std std-doc">signal_analysis</span> - For analyzing signals before export</p></li>
+<li><p><span class="xref std std-doc">debugging_tools</span> - For finding signals to export</p></li>
+<li><p><a class="reference internal" href="llm_optimization.html"><span class="doc">LLM Optimization Tools</span></a> - For context-efficient data access</p></li>
+<li><p><span class="xref std std-doc">api_reference</span> - Complete API documentation</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="llm_optimization.html" class="btn btn-neutral float-left" title="LLM Optimization Tools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="deployment.html" class="btn btn-neutral float-right" title="Deployment Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Matthew Ballance.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

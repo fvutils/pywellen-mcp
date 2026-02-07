@@ -1,0 +1,693 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deployment Guide &mdash; PyWellen MCP 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Export and Integration Tools" href="export_integration.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PyWellen MCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="llm_optimization.html">LLM Optimization Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llm_optimization.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llm_optimization.html#tools">Tools</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llm_optimization.html#query-natural-language">query_natural_language</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llm_optimization.html#signal-summarize">signal_summarize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llm_optimization.html#recommend-related-signals">recommend_related_signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llm_optimization.html#docs-get-started">docs_get_started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llm_optimization.html#docs-tool-guide">docs_tool_guide</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llm_optimization.html#best-practices">Best Practices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llm_optimization.html#token-efficiency">Token Efficiency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llm_optimization.html#query-interpretation-patterns">Query Interpretation Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llm_optimization.html#context-window-management">Context Window Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llm_optimization.html#integration-with-workflows">Integration with Workflows</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llm_optimization.html#limitations">Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llm_optimization.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="export_integration.html">Export and Integration Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="export_integration.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="export_integration.html#export-tools">Export Tools</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="export_integration.html#export-to-csv">export_to_csv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="export_integration.html#export-hierarchy-tree">export_hierarchy_tree</a></li>
+<li class="toctree-l3"><a class="reference internal" href="export_integration.html#export-signal-data">export_signal_data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="export_integration.html#configuration-tools">Configuration Tools</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="export_integration.html#load-signal-list">load_signal_list</a></li>
+<li class="toctree-l3"><a class="reference internal" href="export_integration.html#save-signal-list">save_signal_list</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="export_integration.html#integration-tools">Integration Tools</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="export_integration.html#integration-launch-viewer">integration_launch_viewer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="export_integration.html#integration-watch-file">integration_watch_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="export_integration.html#integration-generate-gtkwave-save">integration_generate_gtkwave_save</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="export_integration.html#common-workflows">Common Workflows</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="export_integration.html#workflow-1-export-for-analysis">Workflow 1: Export for Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="export_integration.html#workflow-2-save-and-share-signal-lists">Workflow 2: Save and Share Signal Lists</a></li>
+<li class="toctree-l3"><a class="reference internal" href="export_integration.html#workflow-3-launch-viewer-with-pre-configured-signals">Workflow 3: Launch Viewer with Pre-configured Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="export_integration.html#workflow-4-live-simulation-monitoring">Workflow 4: Live Simulation Monitoring</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="export_integration.html#best-practices">Best Practices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="export_integration.html#file-paths">File Paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="export_integration.html#configuration-files">Configuration Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="export_integration.html#external-tool-integration">External Tool Integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="export_integration.html#performance">Performance</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="export_integration.html#file-format-recommendations">File Format Recommendations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="export_integration.html#csv-export">CSV Export</a></li>
+<li class="toctree-l3"><a class="reference internal" href="export_integration.html#json-export">JSON Export</a></li>
+<li class="toctree-l3"><a class="reference internal" href="export_integration.html#yaml-export">YAML Export</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="export_integration.html#limitations">Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="export_integration.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Deployment</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Deployment Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#system-requirements">System Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#from-pypi">From PyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#from-source">From Source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-ivpm">Using IVPM</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#environment-variables">Environment Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-file">Configuration File</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#running-the-server">Running the Server</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#standalone-mode">Standalone Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#with-mcp-client">With MCP Client</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docker-deployment">Docker Deployment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#production-considerations">Production Considerations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#performance-tuning">Performance Tuning</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#memory-management">Memory Management</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#security">Security</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#file-access-control">File Access Control</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#command-injection-protection">Command Injection Protection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#network-security">Network Security</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#monitoring">Monitoring</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#logging">Logging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#health-checks">Health Checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#metrics-to-monitor">Metrics to Monitor</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#common-issues">Common Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#debug-mode">Debug Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#performance-debugging">Performance Debugging</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#backup-and-recovery">Backup and Recovery</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#session-state">Session State</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-backup">Configuration Backup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#disaster-recovery">Disaster Recovery</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#upgrading">Upgrading</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#version-compatibility">Version Compatibility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#upgrade-process">Upgrade Process</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#best-practices">Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyWellen MCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Deployment Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/deployment.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="deployment-guide">
+<h1>Deployment Guide<a class="headerlink" href="#deployment-guide" title="Link to this heading"></a></h1>
+<p>This guide covers deploying PyWellen MCP Server to production environments.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<section id="system-requirements">
+<h3>System Requirements<a class="headerlink" href="#system-requirements" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Python</strong>: 3.10 or later</p></li>
+<li><p><strong>Operating System</strong>: Linux, macOS, or Windows</p></li>
+<li><p><strong>Memory</strong>: Minimum 512MB RAM, recommended 2GB+ for large waveforms</p></li>
+<li><p><strong>Disk Space</strong>: 100MB for installation, additional space for waveform files</p></li>
+</ul>
+</section>
+<section id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h3>
+<p>Core dependencies (automatically installed):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mcp</span></code> - MCP protocol implementation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pydantic</span></code> - Data validation and settings management</p></li>
+</ul>
+<p>Optional dependencies:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pyyaml</span></code> - YAML configuration file support</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wellen</span></code> - Waveform file parsing (when using real waveforms)</p></li>
+</ul>
+</section>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<section id="from-pypi">
+<h3>From PyPI<a class="headerlink" href="#from-pypi" title="Link to this heading"></a></h3>
+<p>Once published, install via pip:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pywellen</span><span class="o">-</span><span class="n">mcp</span>
+</pre></div>
+</div>
+</section>
+<section id="from-source">
+<h3>From Source<a class="headerlink" href="#from-source" title="Link to this heading"></a></h3>
+<p>For development or latest features:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">fvutils</span><span class="o">/</span><span class="n">pywellen</span><span class="o">-</span><span class="n">mcp</span><span class="o">.</span><span class="n">git</span>
+<span class="n">cd</span> <span class="n">pywellen</span><span class="o">-</span><span class="n">mcp</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="s2">&quot;.[dev]&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="using-ivpm">
+<h3>Using IVPM<a class="headerlink" href="#using-ivpm" title="Link to this heading"></a></h3>
+<p>For integrated project environments:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add to ivpm.yaml</span>
+<span class="n">packages</span><span class="p">:</span>
+  <span class="o">-</span> <span class="n">pywellen</span><span class="o">-</span><span class="n">mcp</span>
+
+<span class="c1"># Update packages</span>
+<span class="n">ivpm</span> <span class="n">update</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<section id="environment-variables">
+<h3>Environment Variables<a class="headerlink" href="#environment-variables" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">PYWELLEN_MAX_SESSIONS</span></code> - Maximum concurrent sessions (default: 10)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PYWELLEN_SESSION_TIMEOUT</span></code> - Session timeout in seconds (default: 3600)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PYWELLEN_LOG_LEVEL</span></code> - Logging level (default: INFO)</p></li>
+</ul>
+</section>
+<section id="configuration-file">
+<h3>Configuration File<a class="headerlink" href="#configuration-file" title="Link to this heading"></a></h3>
+<p>Create <code class="docutils literal notranslate"><span class="pre">config.json</span></code> in your project directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;max_sessions&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+  <span class="s2">&quot;session_timeout&quot;</span><span class="p">:</span> <span class="mi">3600</span><span class="p">,</span>
+  <span class="s2">&quot;signal_cache_size&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+  <span class="s2">&quot;log_level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;enable_file_validation&quot;</span><span class="p">:</span> <span class="n">true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="running-the-server">
+<h2>Running the Server<a class="headerlink" href="#running-the-server" title="Link to this heading"></a></h2>
+<section id="standalone-mode">
+<h3>Standalone Mode<a class="headerlink" href="#standalone-mode" title="Link to this heading"></a></h3>
+<p>Run the MCP server directly:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pywellen</span><span class="o">-</span><span class="n">mcp</span>
+</pre></div>
+</div>
+<p>The server listens on stdin/stdout for MCP protocol messages.</p>
+</section>
+<section id="with-mcp-client">
+<h3>With MCP Client<a class="headerlink" href="#with-mcp-client" title="Link to this heading"></a></h3>
+<p>Configure in your MCP client (e.g., Claude Desktop):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;mcpServers&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;pywellen&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;command&quot;</span><span class="p">:</span> <span class="s2">&quot;pywellen-mcp&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="docker-deployment">
+<h3>Docker Deployment<a class="headerlink" href="#docker-deployment" title="Link to this heading"></a></h3>
+<p>Create a Dockerfile:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FROM</span> <span class="n">python</span><span class="p">:</span><span class="mf">3.11</span><span class="o">-</span><span class="n">slim</span>
+
+<span class="n">WORKDIR</span> <span class="o">/</span><span class="n">app</span>
+
+<span class="c1"># Install dependencies</span>
+<span class="n">COPY</span> <span class="n">pyproject</span><span class="o">.</span><span class="n">toml</span> <span class="o">.</span>
+<span class="n">RUN</span> <span class="n">pip</span> <span class="n">install</span> <span class="o">.</span>
+
+<span class="c1"># Copy application</span>
+<span class="n">COPY</span> <span class="n">src</span><span class="o">/</span> <span class="n">src</span><span class="o">/</span>
+
+<span class="c1"># Run server</span>
+<span class="n">CMD</span> <span class="p">[</span><span class="s2">&quot;pywellen-mcp&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Build and run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">build</span> <span class="o">-</span><span class="n">t</span> <span class="n">pywellen</span><span class="o">-</span><span class="n">mcp</span> <span class="o">.</span>
+<span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">i</span> <span class="n">pywellen</span><span class="o">-</span><span class="n">mcp</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="production-considerations">
+<h2>Production Considerations<a class="headerlink" href="#production-considerations" title="Link to this heading"></a></h2>
+<section id="performance-tuning">
+<h3>Performance Tuning<a class="headerlink" href="#performance-tuning" title="Link to this heading"></a></h3>
+<p><strong>Session Management</strong>:</p>
+<ul class="simple">
+<li><p>Adjust <code class="docutils literal notranslate"><span class="pre">max_sessions</span></code> based on available memory</p></li>
+<li><p>Rule of thumb: 200MB RAM per active session</p></li>
+<li><p>Monitor session count and cleanup expired sessions</p></li>
+</ul>
+<p><strong>Signal Caching</strong>:</p>
+<ul class="simple">
+<li><p>Increase <code class="docutils literal notranslate"><span class="pre">signal_cache_size</span></code> for frequently accessed signals</p></li>
+<li><p>Cache size of 100-500 typical for production</p></li>
+<li><p>Monitor cache hit rates</p></li>
+</ul>
+<p><strong>File Handling</strong>:</p>
+<ul class="simple">
+<li><p>Use local storage for waveform files (not network mounts)</p></li>
+<li><p>Implement file rotation for temporary exports</p></li>
+<li><p>Set up disk space monitoring</p></li>
+</ul>
+</section>
+<section id="memory-management">
+<h3>Memory Management<a class="headerlink" href="#memory-management" title="Link to this heading"></a></h3>
+<p><strong>Large Waveform Files</strong>:</p>
+<ul class="simple">
+<li><p>Files &gt;1GB may require significant memory</p></li>
+<li><p>Consider splitting large analyses into chunks</p></li>
+<li><p>Use time range filtering to limit data loaded</p></li>
+</ul>
+<p><strong>Session Cleanup</strong>:</p>
+<ul class="simple">
+<li><p>Automatic cleanup runs every hour</p></li>
+<li><p>Manually trigger with session management tools</p></li>
+<li><p>Monitor memory usage and adjust timeouts</p></li>
+</ul>
+<p><strong>Export Operations</strong>:</p>
+<ul class="simple">
+<li><p>CSV exports load all time points in memory</p></li>
+<li><p>Use time range filtering for large exports</p></li>
+<li><p>Consider streaming exports for huge datasets</p></li>
+</ul>
+</section>
+</section>
+<section id="security">
+<h2>Security<a class="headerlink" href="#security" title="Link to this heading"></a></h2>
+<section id="file-access-control">
+<h3>File Access Control<a class="headerlink" href="#file-access-control" title="Link to this heading"></a></h3>
+<p><strong>Path Validation</strong>:</p>
+<ul class="simple">
+<li><p>All file paths are validated and resolved to absolute paths</p></li>
+<li><p>Directory existence and write permissions checked before operations</p></li>
+<li><p>Path traversal attempts are blocked</p></li>
+</ul>
+<p><strong>Recommended Practice</strong>:</p>
+<ul class="simple">
+<li><p>Run server with dedicated user account (not root)</p></li>
+<li><p>Limit file system access to specific directories</p></li>
+<li><p>Use read-only mounts for waveform file directories</p></li>
+</ul>
+</section>
+<section id="command-injection-protection">
+<h3>Command Injection Protection<a class="headerlink" href="#command-injection-protection" title="Link to this heading"></a></h3>
+<p><strong>Viewer Launch</strong>:</p>
+<ul class="simple">
+<li><p>Commands use list form (not shell strings)</p></li>
+<li><p>No <code class="docutils literal notranslate"><span class="pre">shell=True</span></code> in subprocess calls</p></li>
+<li><p>Viewer executables validated before launch</p></li>
+</ul>
+<p><strong>File Monitoring</strong>:</p>
+<ul class="simple">
+<li><p>File paths sanitized before operations</p></li>
+<li><p>No user-controlled command execution</p></li>
+</ul>
+</section>
+<section id="network-security">
+<h3>Network Security<a class="headerlink" href="#network-security" title="Link to this heading"></a></h3>
+<p><strong>MCP Protocol</strong>:</p>
+<ul class="simple">
+<li><p>Communication via stdin/stdout (not network sockets)</p></li>
+<li><p>No network exposure by default</p></li>
+<li><p>Client authentication handled by MCP client</p></li>
+</ul>
+<p><strong>Deployment</strong>:</p>
+<ul class="simple">
+<li><p>If exposing via network proxy, use TLS/SSL</p></li>
+<li><p>Implement authentication at proxy level</p></li>
+<li><p>Rate limiting recommended</p></li>
+</ul>
+</section>
+</section>
+<section id="monitoring">
+<h2>Monitoring<a class="headerlink" href="#monitoring" title="Link to this heading"></a></h2>
+<section id="logging">
+<h3>Logging<a class="headerlink" href="#logging" title="Link to this heading"></a></h3>
+<p>Configure logging levels:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Log important events:</p>
+<ul class="simple">
+<li><p>Session creation and cleanup</p></li>
+<li><p>File operations (open, export, monitor)</p></li>
+<li><p>Error conditions</p></li>
+<li><p>Performance metrics</p></li>
+</ul>
+</section>
+<section id="health-checks">
+<h3>Health Checks<a class="headerlink" href="#health-checks" title="Link to this heading"></a></h3>
+<p>Implement health check endpoint (custom integration):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;healthy&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;active_sessions&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+  <span class="s2">&quot;uptime_seconds&quot;</span><span class="p">:</span> <span class="mi">86400</span><span class="p">,</span>
+  <span class="s2">&quot;memory_usage_mb&quot;</span><span class="p">:</span> <span class="mi">512</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="metrics-to-monitor">
+<h3>Metrics to Monitor<a class="headerlink" href="#metrics-to-monitor" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Session Count</strong>: Current active sessions</p></li>
+<li><p><strong>Memory Usage</strong>: RAM consumption per session</p></li>
+<li><p><strong>Response Times</strong>: Tool call latency</p></li>
+<li><p><strong>Error Rates</strong>: Failed operations per hour</p></li>
+<li><p><strong>Disk Space</strong>: Available space for exports</p></li>
+</ul>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<section id="common-issues">
+<h3>Common Issues<a class="headerlink" href="#common-issues" title="Link to this heading"></a></h3>
+<p><strong>Server Won’t Start</strong>:</p>
+<ul class="simple">
+<li><p>Check Python version (3.10+ required)</p></li>
+<li><p>Verify dependencies installed: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">list</span> <span class="pre">|</span> <span class="pre">grep</span> <span class="pre">mcp</span></code></p></li>
+<li><p>Check for conflicting packages</p></li>
+</ul>
+<p><strong>Session Timeout Errors</strong>:</p>
+<ul class="simple">
+<li><p>Increase <code class="docutils literal notranslate"><span class="pre">session_timeout</span></code> in configuration</p></li>
+<li><p>Check for long-running operations</p></li>
+<li><p>Verify session IDs are valid</p></li>
+</ul>
+<p><strong>File Access Errors</strong>:</p>
+<ul class="simple">
+<li><p>Verify file paths are absolute</p></li>
+<li><p>Check directory permissions</p></li>
+<li><p>Ensure disk space available</p></li>
+</ul>
+<p><strong>Viewer Launch Failures</strong>:</p>
+<ul class="simple">
+<li><p>Verify viewer installed: <code class="docutils literal notranslate"><span class="pre">which</span> <span class="pre">gtkwave</span></code></p></li>
+<li><p>Check viewer in PATH</p></li>
+<li><p>Test viewer manually first</p></li>
+</ul>
+<p><strong>Memory Issues</strong>:</p>
+<ul class="simple">
+<li><p>Reduce <code class="docutils literal notranslate"><span class="pre">max_sessions</span></code></p></li>
+<li><p>Close unused sessions</p></li>
+<li><p>Limit signal cache size</p></li>
+<li><p>Use time range filtering</p></li>
+</ul>
+</section>
+<section id="debug-mode">
+<h3>Debug Mode<a class="headerlink" href="#debug-mode" title="Link to this heading"></a></h3>
+<p>Enable detailed logging:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">PYWELLEN_LOG_LEVEL</span><span class="o">=</span><span class="n">DEBUG</span>
+<span class="n">pywellen</span><span class="o">-</span><span class="n">mcp</span>
+</pre></div>
+</div>
+<p>Check server status:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># List active sessions</span>
+<span class="n">waveform_list_sessions</span>
+
+<span class="c1"># Check file permissions</span>
+<span class="n">ls</span> <span class="o">-</span><span class="n">la</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">waveform</span><span class="o">/</span><span class="n">files</span>
+</pre></div>
+</div>
+</section>
+<section id="performance-debugging">
+<h3>Performance Debugging<a class="headerlink" href="#performance-debugging" title="Link to this heading"></a></h3>
+<p>Run performance benchmarks:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">benchmark</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>Profile memory usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">memory_profiler</span> <span class="n">your_script</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="backup-and-recovery">
+<h2>Backup and Recovery<a class="headerlink" href="#backup-and-recovery" title="Link to this heading"></a></h2>
+<section id="session-state">
+<h3>Session State<a class="headerlink" href="#session-state" title="Link to this heading"></a></h3>
+<p>Sessions are transient (in-memory only):</p>
+<ul class="simple">
+<li><p>No persistent state to backup</p></li>
+<li><p>Sessions recreated by opening waveforms</p></li>
+<li><p>Configuration files should be backed up</p></li>
+</ul>
+</section>
+<section id="configuration-backup">
+<h3>Configuration Backup<a class="headerlink" href="#configuration-backup" title="Link to this heading"></a></h3>
+<p>Backup these files:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">config.json</span></code> - Server configuration</p></li>
+<li><p>Signal list configurations (<code class="docutils literal notranslate"><span class="pre">.json</span></code>, <code class="docutils literal notranslate"><span class="pre">.yaml</span></code>)</p></li>
+<li><p>GTKWave save files (<code class="docutils literal notranslate"><span class="pre">.gtkw</span></code>)</p></li>
+<li><p>Custom scripts and integrations</p></li>
+</ul>
+</section>
+<section id="disaster-recovery">
+<h3>Disaster Recovery<a class="headerlink" href="#disaster-recovery" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Server Failure</strong>: Restart server, sessions will be recreated</p></li>
+<li><p><strong>File Loss</strong>: Restore waveform files from backup</p></li>
+<li><p><strong>Configuration Loss</strong>: Restore config files from backup</p></li>
+<li><p><strong>Data Corruption</strong>: Re-export from original waveforms</p></li>
+</ol>
+</section>
+</section>
+<section id="upgrading">
+<h2>Upgrading<a class="headerlink" href="#upgrading" title="Link to this heading"></a></h2>
+<section id="version-compatibility">
+<h3>Version Compatibility<a class="headerlink" href="#version-compatibility" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Minor versions</strong> (1.0 → 1.1): Backward compatible</p></li>
+<li><p><strong>Major versions</strong> (1.0 → 2.0): May have breaking changes</p></li>
+<li><p>Review CHANGELOG before upgrading</p></li>
+</ul>
+</section>
+<section id="upgrade-process">
+<h3>Upgrade Process<a class="headerlink" href="#upgrade-process" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p><strong>Backup Configuration</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cp</span> <span class="n">config</span><span class="o">.</span><span class="n">json</span> <span class="n">config</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">backup</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Install New Version</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="n">pywellen</span><span class="o">-</span><span class="n">mcp</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Test in Development</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pywellen</span><span class="o">-</span><span class="n">mcp</span> <span class="o">--</span><span class="n">version</span>
+<span class="c1"># Run integration tests</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Deploy to Production</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Stop old version</span>
+<span class="c1"># Start new version</span>
+<span class="c1"># Verify functionality</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Rollback if Needed</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pywellen</span><span class="o">-</span><span class="n">mcp</span><span class="o">==</span><span class="mf">1.0.0</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Resource Management</strong>:</p>
+<ul class="simple">
+<li><p>Set appropriate session limits</p></li>
+<li><p>Monitor memory usage</p></li>
+<li><p>Clean up exports regularly</p></li>
+</ul>
+</li>
+<li><p><strong>Security</strong>:</p>
+<ul class="simple">
+<li><p>Run with minimal privileges</p></li>
+<li><p>Validate all file paths</p></li>
+<li><p>Keep dependencies updated</p></li>
+</ul>
+</li>
+<li><p><strong>Monitoring</strong>:</p>
+<ul class="simple">
+<li><p>Log important events</p></li>
+<li><p>Track performance metrics</p></li>
+<li><p>Set up alerts for errors</p></li>
+</ul>
+</li>
+<li><p><strong>Maintenance</strong>:</p>
+<ul class="simple">
+<li><p>Regular dependency updates</p></li>
+<li><p>Periodic security audits</p></li>
+<li><p>Performance benchmarking</p></li>
+</ul>
+</li>
+<li><p><strong>Documentation</strong>:</p>
+<ul class="simple">
+<li><p>Document custom configurations</p></li>
+<li><p>Maintain runbooks</p></li>
+<li><p>Track known issues</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="support">
+<h2>Support<a class="headerlink" href="#support" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Documentation</strong>: <a class="reference external" href="https://fvutils.github.io/pywellen-mcp">https://fvutils.github.io/pywellen-mcp</a></p></li>
+<li><p><strong>Issues</strong>: <a class="reference external" href="https://github.com/fvutils/pywellen-mcp/issues">https://github.com/fvutils/pywellen-mcp/issues</a></p></li>
+<li><p><strong>Discussions</strong>: <a class="reference external" href="https://github.com/fvutils/pywellen-mcp/discussions">https://github.com/fvutils/pywellen-mcp/discussions</a></p></li>
+</ul>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><span class="xref std std-doc">getting_started</span> - Quick start guide</p></li>
+<li><p><span class="xref std std-doc">api_reference</span> - Complete API documentation</p></li>
+<li><p><span class="xref std std-doc">performance</span> - Performance tuning guide</p></li>
+<li><p><span class="xref std std-doc">security</span> - Security best practices</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="export_integration.html" class="btn btn-neutral float-left" title="Export and Integration Tools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Matthew Ballance.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
